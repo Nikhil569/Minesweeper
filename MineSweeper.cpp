@@ -46,11 +46,11 @@ void get_points(){
 	}
 }
 
-int check_mines(){																			//Count of mines around all 8 blocks of given coordinates is checked and then count is returned 
+int check_mines(int x,int y){																			//Count of mines around all 8 blocks of given coordinates is checked and then count is returned 
 	int count=0;
-	for(int i=X-1;i<=X+1;i++){
-		for(int j=Y-1;j<=Y+1;j++){
-			if(i>=0 && i<n && j>=0 && j<n && !(i==X && j==Y)){
+	for(int i=x-1;i<=x+1;i++){
+		for(int j=y-1;j<=y+1;j++){
+			if(i>=0 && i<n && j>=0 && j<n && !(i==x && j==y)){
 				if(mines.find(n*i + j)!=mines.end())	count++;
 			}
 		}
@@ -62,7 +62,7 @@ void show_board(){																			//Status of Board after every move is shown
 	cout<<"Current Status of Board:"<<endl;
 	cout<<"     ";
 	for(int i=0;i<n;i++)	cout<<i<<" ";
-	cout<<endl;
+	cout<<"\n\n";
 	for(int i=0;i<n;i++){
 		cout<<i<<"    ";
 		for(int j=0;j<n;j++){
@@ -73,15 +73,17 @@ void show_board(){																			//Status of Board after every move is shown
 	cout<<endl;
 }
 
-/*
+
 void reveal(int x,int y){																	//using dfs on matrix for finding revealing blocks
 	if(x<0 || x>=n || y<0 || y>=n)	return;
 	if(mines.find(n*x + y)!=mines.end())	return;
 	if(mp[n*x + y]==1)	return;
 
-	char count = '0' + check_mines();														
+	char count = '0' + check_mines(x,y);														
 	v[x][y] = count;
 	mp[n*x + y] = 1;
+
+	if(count!='0')	return;
 
 	for(int i=x-1;i<=x+1;i++){
 		for(int j=y-1;j<=y+1;j++){
@@ -89,7 +91,7 @@ void reveal(int x,int y){																	//using dfs on matrix for finding reve
 		}
 	}
 }
-*/
+
 
 int main(int argc, char const *argv[])
 {	
@@ -122,10 +124,10 @@ int main(int argc, char const *argv[])
 			//mp[n*X + Y] = 1;
 		}
 
-		//reveal(X,Y);
-		char count = '0' + check_mines();														
-		v[X][Y] = count;
-		mp[n*X + Y] = 1;
+		reveal(X,Y);
+		//char count = '0' + check_mines(X,Y);														
+		//v[X][Y] = count;
+		//mp[n*X + Y] = 1;
 		show_board();
 	}
 
